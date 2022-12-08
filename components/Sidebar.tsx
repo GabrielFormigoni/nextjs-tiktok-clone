@@ -6,8 +6,14 @@ import GoogleLogin from "react-google-login";
 import { AiFillHome, AiOutlineMenu } from "react-icons/ai";
 import { ImCancelCircle } from "react-icons/im";
 
+import Discover from "./Discover";
+import SuggestedAccounts from "./SuggestedAccounts";
+import Footer from "./Footer";
+
 const Sidebar = () => {
   const [showSidebar, setShowSidebar] = useState(true);
+  const userProfile = false;
+
   const normalLink = "flex justify-center items-center gap-6 hover:bg-primary p-3 cursor-pointer font-semibold text-[#F51997] xl:justify-start rounded"
 
   return (
@@ -30,6 +36,32 @@ const Sidebar = () => {
               </div>
             </Link>
           </div>
+          {!userProfile && (
+            <div className="px-2 py-4 hidden xl:block">
+              <p className="text-gray-400">Log in to see the videos</p>
+              <div>
+                <GoogleLogin
+                  clientId=""
+                  onSuccess={() => {}}
+                  onFailure={() => {}}
+                  render={(renderProps) => (
+                    <button
+                      className="bg-white text-lg text-[#F51997] border-[1px] border-[#F51997] rounded-md mt-3 font-semibold py-3 px-6 w-full outline-none hover:bg-[#F51997] hover:text-white cursor-pointer"
+                      onClick={renderProps.onClick}
+                      disabled={renderProps.disabled}
+                    >
+                      Log in
+                    </button>
+                  )}
+                  cookiePolicy="single_host_origin"
+                  />
+              </div>
+            </div>
+          )}
+
+          <Discover />
+          <SuggestedAccounts />
+          <Footer />
         </div>
       )}
     </div>
