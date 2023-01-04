@@ -9,6 +9,7 @@ import axios from "axios";
 import { client } from "../utils/client";
 import { topics } from "../utils/constants";
 import useAuthStore from "../store/authStore";
+import { BASE_URL } from "../utils";
 
 const Upload = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -65,7 +66,7 @@ const handlePost = async () => {
       topic: category
     }
 
-    await axios.post('http://localhost:3000/api/post', document);
+    await axios.post(`${BASE_URL}/api/post`, document);
 
     router.push('/');
   }
@@ -79,7 +80,7 @@ const clear = () => {
 
   return (
     <div className="flex h-full w-full absolute bg-[#F8F8F8] left-0 top-[60px] pt-10 mb-10 lg:pt-20 justify-center">
-      <div className="bg-white rounded-lg md:w-[60%] w-[100%] xl:h-[80vh] flex gap-6 flex-wrap justify-between items-center p-14 pt-6">
+      <div className="bg-white rounded-lg md:w-[80%] w-[100%] xl:h-[100vh] flex gap-6 flex-wrap justify-between items-center p-14 pt-6">
         <div>
           <div>
             <p className="text-2xl font-bold">Upload Video</p>

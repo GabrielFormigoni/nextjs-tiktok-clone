@@ -86,11 +86,11 @@ const VideoCard: NextPage<IProps> = ({ post: { caption, postedBy, video, _id, li
                 </button>
               )}
               {isMuted ? (
-                <button onClick={() => setIsMuted((prevIsMuted) => !prevIsMuted)}>
+                <button onClick={() => setIsMuted(false)}>
                   <HiVolumeOff className="text-black text-2xl lg:text-4xl"/>
                 </button>
               ) : (
-                <button onClick={() => setIsMuted((prevIsMuted) => !prevIsMuted)}>
+                <button onClick={() => setIsMuted(true)}>
                   <HiVolumeUp  className="text-black text-2xl lg:text-4xl"/>
                 </button>
               )}
