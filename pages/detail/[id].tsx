@@ -22,8 +22,11 @@ const Detail = ({ postDetails }: IProps) => {
   const [playing, setPlaying] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isMuted, setIsMuted] = useState(false);
+  const [comment, setComment] = useState("");
+  const [isPostingcomment, setIsPostingComment] = useState(false);
+
   const router = useRouter();
-  const { userProfile }: any = useAuthStore()
+  const { userProfile }: any = useAuthStore();
 
   const onVideoClick = () => {
     if (playing) {
@@ -42,20 +45,33 @@ const Detail = ({ postDetails }: IProps) => {
   }, [post, isMuted]);
 
   const handleLike = async (like: boolean) => {
-    if(userProfile) {
+    if (userProfile) {
       const { data } = await axios.put(`${BASE_URL}/api/like`, {
         userId: userProfile._id,
         postId: post._id,
         like,
-      })
+      });
 
       setPost({ ...post, likes: data.likes });
     }
-  }
-  
-  const handleDislike = () => {
+  };
 
-  }
+  const addComment = async (e: any) => {
+    e.preventDefault();
+
+    if (userProfile && comment) {
+      setIsPostingComment(true);
+
+      const { data } = await axios.put(`${BASE_URL}/api/post/${post._id}`, {
+        userId: userProfile._id,
+        comment,
+      });
+
+      setPost({ ...post, comments: data.comments });
+      setComment("");
+      setIsPostingComment(false);
+    }
+  };
 
   return (
     <>
@@ -102,16 +118,16 @@ const Detail = ({ postDetails }: IProps) => {
             <div className="lg:mt-20 mt-10">
               <div className="flex gap-3 font-semibold rounded p-2 cursor-pointer">
                 <div className="ml-4 md:w-20 md:h-16 h-16 w-16">
-                    <div onClick={() => router.back()}>
-                      <Image
-                        width={62}
-                        height={62}
-                        className="rounded-full"
-                        src={post?.postedBy.image}
-                        alt="profile-pic"
-                        layout="responsive"
-                      />
-                    </div>
+                  <div onClick={() => router.back()}>
+                    <Image
+                      width={62}
+                      height={62}
+                      className="rounded-full"
+                      src={post?.postedBy.image}
+                      alt="profile-pic"
+                      layout="responsive"
+                    />
+                  </div>
                 </div>
                 <div>
                   <div onClick={() => router.back()}>
@@ -128,19 +144,23 @@ const Detail = ({ postDetails }: IProps) => {
                 </div>
               </div>
 
-              <p className="mt-6 px-10 text-lg text-gray-600">
-                {post.caption}
-              </p>
+              <p className="mt-6 px-10 text-lg text-gray-600">{post.caption}</p>
               <div className="mt-10 px-10">
                 {userProfile && (
                   <LikeButton
                     likes={post.likes}
                     handleLike={() => handleLike(true)}
-                    handleDislike={() => handleLike(false)} />
+                    handleDislike={() => handleLike(false)}
+                  />
                 )}
               </div>
-              <Comments />
-              
+              <Comments
+                comment={comment}
+                setComment={setComment}
+                addComment={addComment}
+                comments={post.comments}
+                isPostingComment={isPostingcomment}
+              />
             </div>
           </div>
         </div>
