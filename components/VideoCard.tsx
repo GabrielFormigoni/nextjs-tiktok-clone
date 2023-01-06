@@ -6,7 +6,8 @@ import Link from "next/link";
 import { HiVolumeUp, HiVolumeOff } from "react-icons/hi";
 import { BsPlay, BsFillPlayFill, BsFillPauseFill } from "react-icons/bs";
 import { GoVerified } from "react-icons/go";
-
+import { BASE_URL } from "../utils";
+import useAuthStore from "../store/authStore";
 interface IProps {
   post: Video;
 }
@@ -16,6 +17,7 @@ const VideoCard: NextPage<IProps> = ({ post: { caption, postedBy, video, _id, li
   const [isPlaying, setIsPlaying] = useState(false)
   const [isMuted, setIsMuted] = useState(false)
   const videoRef = useRef<HTMLVideoElement>(null)
+  const { userProfile } = useAuthStore();
 
   const onVideoPress = () => {
     if(isPlaying){
@@ -40,7 +42,7 @@ const VideoCard: NextPage<IProps> = ({ post: { caption, postedBy, video, _id, li
       <div>
         <div className="flex gap-3 font-semibold rounded p-2 cursor-pointer">
           <div className="md:w-16 md:h-16 h-10 w-10">
-            <Link href="/">
+            <Link href={`${BASE_URL}/profile/${postedBy._id}`}>
               <>
                 <Image
                   width={62}
@@ -54,7 +56,7 @@ const VideoCard: NextPage<IProps> = ({ post: { caption, postedBy, video, _id, li
             </Link>
           </div>
           <div>
-            <Link href="">
+            <Link href={`${BASE_URL}/profile/${postedBy._id}`}>
               <div className="flex items-center gap-2">
                 <p className="flex items-center gap-2 font-bold text-primary">
                   {postedBy.userName}
